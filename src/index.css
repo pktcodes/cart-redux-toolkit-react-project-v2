@@ -135,7 +135,7 @@ nav h3 {
   letter-spacing: 1px;
   color: var(--clr-white);
 }
-.nav-container {
+.nav-cart-icon-container {
   display: block;
   position: relative;
 }
