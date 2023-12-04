@@ -21,8 +21,21 @@ const Navbar = () => {
 
 export default Navbar;
 
-/* 
-  useSelector 
-  - Expects a callback function as parameter
-  - In callback function, entire application store is provided as parameter
+/*  
+============
+useSelector
+============
+- Expects a callback function as parameter
+- In callback function, entire application store is provided as parameter
+*/
+
+/*  
+=========
+HeroIcons
+=========
+import { Trash } from '../icons';
+
+<div style={{ width: '40px', color: 'black' }}>
+  <Trash />
+</div>
 */
