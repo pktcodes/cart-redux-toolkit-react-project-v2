@@ -14,6 +14,8 @@ const cartSlice = createSlice({
   reducers: {
     clearCart: (state) => {
       state.cartItems = [];
+      // console.log({ ...state });
+      // return { cartItems: [] };
     },
   },
 });
