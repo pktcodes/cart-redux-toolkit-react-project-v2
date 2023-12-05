@@ -2,7 +2,11 @@ import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 
 import { ChevronUp, ChevronDown } from '../icons';
-import { removeItem } from '../features/cart/cartSlice';
+import {
+  decreaseItemAmount,
+  increaseItemAmount,
+  removeItem,
+} from '../features/cart/cartSlice';
 
 const CartItem = ({ id, img, title, price, amount }) => {
   const dispatch = useDispatch();
@@ -18,11 +22,23 @@ const CartItem = ({ id, img, title, price, amount }) => {
         </button>
       </div>
       <div>
-        <button className="amount-btn">
+        <button
+          className="amount-btn"
+          onClick={() => dispatch(increaseItemAmount({ id }))}
+        >
           <ChevronUp />
         </button>
         <p className="amount">{amount}</p>
-        <button className="amount-btn">
+        <button
+          className="amount-btn"
+          onClick={
+            amount === 1
+              ? () => dispatch(removeItem(id))
+              : () => {
+                  dispatch(decreaseItemAmount({ id }));
+                }
+          }
+        >
           <ChevronDown />
         </button>
       </div>

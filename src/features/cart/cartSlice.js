@@ -17,11 +17,25 @@ const cartSlice = createSlice({
       state.cartItems = [];
     },
     removeItem: (state, action) => {
-      console.log(action);
+      // console.log(action);
       const itemId = action.payload;
       state.cartItems = state.cartItems.filter(
         (cartItem) => cartItem.id !== itemId
       );
+    },
+    increaseItemAmount: (state, action) => {
+      const itemId = action.payload.id;
+      const selectedCartItem = state.cartItems.find(
+        (cartItem) => cartItem.id === itemId
+      );
+      selectedCartItem.amount = selectedCartItem.amount + 1;
+    },
+    decreaseItemAmount: (state, action) => {
+      const itemId = action.payload.id;
+      const selectedCartItem = state.cartItems.find(
+        (cartItem) => cartItem.id === itemId
+      );
+      selectedCartItem.amount = selectedCartItem.amount - 1;
     },
   },
 });
@@ -32,8 +46,9 @@ const cartSlice = createSlice({
   Setup of Action Creator, we directly get Action Creator with 
   Redux ToolKit */
 
-const { clearCart, removeItem } = cartSlice.actions;
+const { clearCart, removeItem, increaseItemAmount, decreaseItemAmount } =
+  cartSlice.actions;
 
-export { clearCart, removeItem };
+export { clearCart, removeItem, increaseItemAmount, decreaseItemAmount };
 
 export default cartSlice.reducer;
