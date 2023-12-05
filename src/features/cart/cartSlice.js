@@ -13,9 +13,15 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     clearCart: (state) => {
+      // Can Mutate State since Immer from Redux Toolkit handles the process in background
       state.cartItems = [];
-      // console.log({ ...state });
-      // return { cartItems: [] };
+    },
+    removeItem: (state, action) => {
+      console.log(action);
+      const itemId = action.payload;
+      state.cartItems = state.cartItems.filter(
+        (cartItem) => cartItem.id !== itemId
+      );
     },
   },
 });
@@ -26,8 +32,8 @@ const cartSlice = createSlice({
   Setup of Action Creator, we directly get Action Creator with 
   Redux ToolKit */
 
-const { clearCart } = cartSlice.actions;
+const { clearCart, removeItem } = cartSlice.actions;
 
-export { clearCart };
+export { clearCart, removeItem };
 
 export default cartSlice.reducer;
