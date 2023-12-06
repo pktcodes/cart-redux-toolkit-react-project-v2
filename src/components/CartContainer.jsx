@@ -3,9 +3,21 @@ import { useDispatch, useSelector } from 'react-redux';
 import CartItem from './CartItem';
 import { clearCart } from '../features/cart/cartSlice';
 
+// import { useEffect } from 'react';
+// import { calculateTotals } from '../features/cart/cartSlice';
+
 const CartContainer = () => {
   const dispatch = useDispatch();
   const { cartItems, amount, total } = useSelector((state) => state.cart);
+
+  /* 
+  ==================================
+  ALTERNATIVE - For Totals in App.js
+  ==================================
+    useEffect(() => {
+      dispatch(calculateTotals({ amount, total }));
+    }, [cartItems]);
+  */
 
   if (amount < 1) {
     return (
@@ -35,7 +47,7 @@ const CartContainer = () => {
         <div className="cart-total">
           <h4>
             total
-            <span>${total}</span>
+            <span>${total.toFixed(2)}</span>
           </h4>
         </div>
         {/* Button */}

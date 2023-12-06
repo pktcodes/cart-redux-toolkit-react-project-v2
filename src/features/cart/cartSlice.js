@@ -37,6 +37,37 @@ const cartSlice = createSlice({
       );
       selectedCartItem.amount = selectedCartItem.amount - 1;
     },
+    /* 
+    ============
+    Using Reduce
+    ============
+      calculateTotals: (state) => {
+        const { total, amount } = state.cartItems.reduce(
+          (accumulator, currentItem) => {
+            const { amount, price } = currentItem;
+            // Amount
+            accumulator.amount = accumulator.amount + currentItem.amount;
+            // Total
+            const itemTotal = amount * price;
+            accumulator.total = accumulator.total + itemTotal;
+            return accumulator;
+          },
+          { total: 0, amount: 0 }
+        );
+        state.amount = amount;
+        state.total = total.toFixed(2);
+      },
+    */
+    calculateTotals: (state) => {
+      let totalAmount = 0;
+      let totalPrice = 0;
+      state.cartItems.forEach((cartItem) => {
+        totalAmount += cartItem.amount;
+        totalPrice += cartItem.amount * cartItem.price;
+      });
+      state.amount = totalAmount;
+      state.total = totalPrice;
+    },
   },
 });
 
@@ -46,9 +77,20 @@ const cartSlice = createSlice({
   Setup of Action Creator, we directly get Action Creator with 
   Redux ToolKit */
 
-const { clearCart, removeItem, increaseItemAmount, decreaseItemAmount } =
-  cartSlice.actions;
+const {
+  clearCart,
+  removeItem,
+  increaseItemAmount,
+  decreaseItemAmount,
+  calculateTotals,
+} = cartSlice.actions;
 
-export { clearCart, removeItem, increaseItemAmount, decreaseItemAmount };
+export {
+  clearCart,
+  removeItem,
+  increaseItemAmount,
+  decreaseItemAmount,
+  calculateTotals,
+};
 
 export default cartSlice.reducer;
