@@ -1,16 +1,38 @@
-import { createSlice } from '@reduxjs/toolkit';
-import cartItems from '../../cartItems';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 const initialState = {
-  cartItems: cartItems,
+  cartItems: [],
   amount: 5,
   total: 0,
   isLoading: true,
 };
 
+const url = 'https://course-api.com/react-useReducer-cart-project';
+
+export const getCartItems = createAsyncThunk('cart/getCartItems', () => {
+  return fetch(url)
+    .then((response) => response.json())
+    .catch((error) => {
+      console.log(error);
+    });
+});
+
 const cartSlice = createSlice({
   name: 'cart',
   initialState,
+  extraReducers: {
+    [getCartItems.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [getCartItems.fulfilled]: (state, action) => {
+      console.log(action);
+      state.cartItems = action.payload;
+      state.isLoading = false;
+    },
+    [getCartItems.rejected]: (state) => {
+      state.isLoading = false;
+    },
+  },
   reducers: {
     clearCart: (state) => {
       // Can Mutate State since Immer from Redux Toolkit handles the process in background
