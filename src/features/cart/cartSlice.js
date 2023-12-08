@@ -1,21 +1,42 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import axios from 'axios';
+// import { openModal } from '../modal/modalSlice';
 
 const initialState = {
   cartItems: [],
   amount: 5,
   total: 0,
   isLoading: true,
+  isError: false,
 };
 
 const url = 'https://course-api.com/react-useReducer-cart-project';
 
-export const getCartItems = createAsyncThunk('cart/getCartItems', () => {
-  return fetch(url)
-    .then((response) => response.json())
-    .catch((error) => {
-      console.log(error);
-    });
-});
+export const getCartItems = createAsyncThunk(
+  'cart/getCartItems',
+  async (greeting, thunkAPI) => {
+    try {
+      /* 
+      ==========================
+      createAsyncThunk - Options
+      ==========================
+      // Parameter from any component to this async function
+      // console.log(greeting);
+      // ThunkAPI - by convention
+      // console.log(thunkAPI);
+      // Can access entire store, other features or slice i.e., modal
+      // console.log(thunkAPI.getState().modal);
+      // console.log(thunkAPI.dispatch(openModal()));
+      */
+
+      const response = await axios.get(url);
+      return response.data;
+    } catch (error) {
+      const errorMessage = error?.response?.data?.msg;
+      return thunkAPI.rejectWithValue(errorMessage);
+    }
+  }
+);
 
 const cartSlice = createSlice({
   name: 'cart',
@@ -25,12 +46,14 @@ const cartSlice = createSlice({
       state.isLoading = true;
     },
     [getCartItems.fulfilled]: (state, action) => {
-      console.log(action);
+      // console.log(action);
       state.cartItems = action.payload;
       state.isLoading = false;
     },
-    [getCartItems.rejected]: (state) => {
+    [getCartItems.rejected]: (state, action) => {
+      console.log(action);
       state.isLoading = false;
+      state.isError = true;
     },
   },
   reducers: {
@@ -108,11 +131,11 @@ const {
 } = cartSlice.actions;
 
 export {
-  clearCart,
-  removeItem,
-  increaseItemAmount,
-  decreaseItemAmount,
   calculateTotals,
+  clearCart,
+  decreaseItemAmount,
+  increaseItemAmount,
+  removeItem,
 };
 
 export default cartSlice.reducer;
