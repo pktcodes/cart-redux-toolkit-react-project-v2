@@ -41,20 +41,21 @@ export const getCartItems = createAsyncThunk(
 const cartSlice = createSlice({
   name: 'cart',
   initialState,
-  extraReducers: {
-    [getCartItems.pending]: (state) => {
-      state.isLoading = true;
-    },
-    [getCartItems.fulfilled]: (state, action) => {
-      // console.log(action);
-      state.cartItems = action.payload;
-      state.isLoading = false;
-    },
-    [getCartItems.rejected]: (state, action) => {
-      console.log(action);
-      state.isLoading = false;
-      state.isError = true;
-    },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getCartItems.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getCartItems.fulfilled, (state, action) => {
+        // console.log(action);
+        state.cartItems = action.payload;
+        state.isLoading = false;
+      })
+      .addCase(getCartItems.rejected, (state, action) => {
+        console.log(action);
+        state.isLoading = false;
+        state.isError = true;
+      });
   },
   reducers: {
     clearCart: (state) => {
